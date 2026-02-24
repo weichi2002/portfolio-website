@@ -5,9 +5,9 @@ import FunFacts from '../components/FunFacts.astro';
 ---
 <BaseLayout title="Portfolio">
   <main>
-    <section class="min-h-screen flex flex-col items-center justify-center py-20">
+    <section class="relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden">
       <Hero />
-      <div class="mt-16 w-full">
+      <div class="mt-16 w-full relative z-10">
         <FunFacts />
       </div>
     </section>
