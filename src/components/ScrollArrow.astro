@@ -1,0 +1,44 @@
+---
+---
+
+<div class="scroll-arrow-wrapper flex justify-center relative z-10">
+  <button
+    id="scroll-arrow"
+    class="scroll-arrow text-text-muted hover:text-accent transition-colors duration-200 cursor-pointer bg-transparent border-none p-2"
+    aria-label="Scroll to projects"
+    type="button"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </button>
+</div>
+
+<style>
+  .scroll-arrow {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+
+  .scroll-arrow:hover {
+    animation-play-state: paused;
+  }
+</style>
+
+<script>
+  document.getElementById('scroll-arrow')?.addEventListener('click', () => {
+    const target = document.getElementById('projects');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
