@@ -39,7 +39,7 @@ const projects = [
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   {projects.map((project) => (
-    <div class="group bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-border rounded-xl p-6 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300">
+    <div class="project-card group bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-border rounded-xl p-6 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300" style="opacity: 0;">
       <h3 class="text-xl font-semibold text-text">{project.name}</h3>
       <p class="text-text-muted text-sm mb-3">{project.tagline}</p>
 
@@ -62,3 +62,26 @@ const projects = [
     </div>
   ))}
 </div>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const card = entry.target as HTMLElement;
+          const index = Number(card.dataset.index) || 0;
+          setTimeout(() => {
+            card.classList.add('fade-in-up');
+          }, index * 120);
+          observer.unobserve(card);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    (card as HTMLElement).dataset.index = String(i);
+    observer.observe(card);
+  });
+</script>
