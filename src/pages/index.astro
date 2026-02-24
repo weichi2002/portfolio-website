@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 ---
 <BaseLayout title="Portfolio">
   <main>
-    <p class="text-terminal-green font-mono">Hello, world.</p>
+    <section class="min-h-screen flex flex-col items-center justify-center py-20">
+      <Hero />
+    </section>
   </main>
 </BaseLayout>
