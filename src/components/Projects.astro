@@ -1,0 +1,64 @@
+---
+const projects = [
+  {
+    name: "Project Alpha",
+    tagline: "A real-time collaboration tool",
+    description: "Built a real-time collaboration platform that enables teams to work together seamlessly with live cursors, shared editing, and instant sync.",
+    tags: ["React", "WebSocket", "Node.js"],
+    github: "https://github.com",
+    demo: "https://example.com",
+  },
+  {
+    name: "Project Beta",
+    tagline: "AI-powered code review assistant",
+    description: "An intelligent code review tool that uses machine learning to suggest improvements, catch bugs, and enforce coding standards automatically.",
+    tags: ["Python", "FastAPI", "OpenAI"],
+    github: "https://github.com",
+    demo: "https://example.com",
+  },
+  {
+    name: "Project Gamma",
+    tagline: "Minimalist habit tracker",
+    description: "A clean, distraction-free habit tracking app focused on simplicity. Track daily habits with streaks, stats, and gentle reminders.",
+    tags: ["Next.js", "Tailwind", "Supabase"],
+    github: "https://github.com",
+    demo: "https://example.com",
+  },
+  {
+    name: "Project Delta",
+    tagline: "Open-source design system",
+    description: "A comprehensive design system with accessible components, design tokens, and documentation. Used by teams to build consistent UIs faster.",
+    tags: ["TypeScript", "Storybook", "CSS"],
+    github: "https://github.com",
+    demo: "https://example.com",
+  },
+];
+---
+
+<h2 class="text-3xl md:text-4xl font-bold text-text text-center mb-12">Projects</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {projects.map((project) => (
+    <div class="group bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-border rounded-xl p-6 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300">
+      <h3 class="text-xl font-semibold text-text">{project.name}</h3>
+      <p class="text-text-muted text-sm mb-3">{project.tagline}</p>
+
+      <div class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-300">
+        <div class="overflow-hidden">
+          <p class="text-text-muted text-sm leading-relaxed mb-4">{project.description}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-4">
+        {project.tags.map((tag) => (
+          <span class="bg-accent-soft text-accent text-xs px-2 py-1 rounded-full">{tag}</span>
+        ))}
+      </div>
+
+      <div class="flex gap-4">
+        <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-accent text-sm hover:underline">GitHub</a>
+        <a href={project.demo} target="_blank" rel="noopener noreferrer" class="text-accent text-sm hover:underline">Live Demo</a>
+      </div>
+    </div>
+  ))}
+</div>
