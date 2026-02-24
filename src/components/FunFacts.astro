@@ -1,0 +1,29 @@
+---
+const facts = [
+  { category: "Travel", emoji: "\u{1F30D}", fact: "I've visited 12 countries and counting" },
+  { category: "Code", emoji: "\u{1F4BB}", fact: "My first program was a calculator in Python" },
+  { category: "Food", emoji: "\u{1F355}", fact: "I can make pasta from scratch in 30 minutes" },
+];
+---
+
+<div class="flex flex-wrap justify-center gap-6">
+  {facts.map((item) => (
+    <div class="flip-card w-[220px] h-[200px]">
+      <div class="flip-card-inner relative w-full h-full">
+        <div class="flip-card-front absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-terminal-card border border-white/10">
+          <span class="text-4xl mb-3">{item.emoji}</span>
+          <span class="font-mono text-terminal-text text-sm tracking-wide">{item.category}</span>
+        </div>
+        <div class="flip-card-back absolute inset-0 flex items-center justify-center rounded-lg bg-terminal-card border border-terminal-green p-5 shadow-[0_0_15px_rgba(0,255,65,0.3)]">
+          <p class="font-sans text-terminal-green text-center text-sm leading-relaxed">{item.fact}</p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+</script>
