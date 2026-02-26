@@ -10,11 +10,11 @@ const facts = [
   {facts.map((item) => (
     <div class="flip-card w-[220px] h-[200px]">
       <div class="flip-card-inner relative w-full h-full">
-        <div class="flip-card-front absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-border">
+        <div class="flip-card-front absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.3)] border border-border">
           <span class="text-5xl mb-3">{item.emoji}</span>
           <span class="text-text-muted text-sm font-medium tracking-wide">{item.category}</span>
         </div>
-        <div class="flip-card-back absolute inset-0 flex items-center justify-center rounded-xl bg-accent-soft p-5 shadow-[0_0_20px_rgba(28,134,255,0.2)]">
+        <div class="flip-card-back absolute inset-0 flex items-center justify-center rounded-xl bg-accent-soft p-5 shadow-[0_0_20px_rgba(59,139,255,0.25)] border border-accent/20">
           <p class="text-text text-center text-sm leading-relaxed">{item.fact}</p>
         </div>
       </div>

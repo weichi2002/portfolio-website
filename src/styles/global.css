@@ -5,16 +5,16 @@ html {
 }
 
 @theme {
-  --color-bg: #ffffff;
-  --color-bg-soft: #f8f9fa;
-  --color-accent: #1c86ff;
-  --color-accent-soft: #eef4fb;
-  --color-mint: #effaf5;
-  --color-text: #1a1a1a;
-  --color-text-muted: #5c5c5c;
-  --color-card-bg: #ffffff;
-  --color-card-shadow: rgba(0, 0, 0, 0.05);
-  --color-border: #e5e7eb;
+  --color-bg: #0b0b10;
+  --color-bg-soft: #111118;
+  --color-accent: #3b8bff;
+  --color-accent-soft: rgba(59, 139, 255, 0.1);
+  --color-mint: rgba(16, 185, 129, 0.08);
+  --color-text: #e8e8ed;
+  --color-text-muted: #8b8b9e;
+  --color-card-bg: #16161e;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  --color-border: #2a2a3a;
   --font-sans: 'Inter', sans-serif;
 }
 
