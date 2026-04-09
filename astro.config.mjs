@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://weichi2002.github.io',
-  base: '/portfolio-website',
+  base: '/portfolio-website/',
   vite: {
     plugins: [tailwindcss()],
   },
