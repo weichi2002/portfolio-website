@@ -11,6 +11,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.1",
-    "tailwindcss": "^4.2.1"
+    "globe.gl": "^2.45.0",
+    "tailwindcss": "^4.2.1",
+    "three": "^0.183.2"
   }
 }

@@ -1,0 +1,757 @@
+---
+import FunFacts from "./FunFacts.astro";
+
+const abilities = [
+  {
+    key: "Q",
+    name: "Mobile Mastery",
+    subtitle: "Passive",
+    icon: "⟨/⟩",
+    description: "Passively engineers polished Android experiences. Jetpack Compose, Kotlin Coroutines, Dagger Hilt — Clean Architecture from day one.",
+    detail: "Android SDK · Jetpack Compose · Kotlin Coroutines · Dagger Hilt · Clean Architecture. Mapped 40+ hardware error states to clean TTP SDK API responses.",
+    color: "#c89b3c",
+  },
+  {
+    key: "W",
+    name: "Backend Forge",
+    subtitle: "Active",
+    icon: "⇄",
+    description: "Spins up high-throughput microservices that don't flinch at 10M+ daily transactions. Spring Boot, Kafka, Redis — battle-tested in production.",
+    detail: "Java · Kotlin · Spring Boot · Kafka · Redis · RESTful APIs · Microservices · PCF · AWS. ISO 8583 message enrichment for Nashville adapter at Fiserv.",
+    color: "#0ac8b9",
+  },
+  {
+    key: "E",
+    name: "Debug Vision",
+    subtitle: "Active",
+    icon: "◎",
+    description: "Reveals hidden bugs across production systems. Resolves certification blockers, fixes payment flows, and untangles race conditions before launch.",
+    detail: "Systematic — reproduce first, isolate second, fix last. Splunk, Postman, GitLab CI/CD. Unblocked Verifone–CommerceHub L3 cert ahead of product launch.",
+    color: "#a855f7",
+  },
+  {
+    key: "R",
+    name: "Full Deploy",
+    subtitle: "Ultimate",
+    icon: "⬡",
+    locked: false,
+    description: "Channels for 0 seconds — concept to production-ready system, solo. Launched King of the Hill to 4,000 organic users in 2 weeks. Cooldown: 0.",
+    detail: "Java · Kotlin · Python · TypeScript · Next.js · Firebase · Redis · Spring Boot · AWS · CI/CD. The fourth ability always ships.",
+    color: "#c0392b",
+  },
+];
+
+const roles = [
+  "Systems Engineer",
+  "Builder",
+  "League of Legends Enthusiast"
+];
+
+const skillGroups = [
+  { label: "Languages", skills: ["Java", "Kotlin", "Python", "TypeScript", "JavaScript"], color: "#c89b3c" },
+  { label: "Backend & Data", skills: ["Spring Boot", "Firebase", "Redis", "Kafka", "REST APIs", "Microservices"], color: "#0ac8b9" },
+  { label: "Mobile", skills: ["Android SDK", "Jetpack Compose", "Kotlin Coroutines", "Dagger Hilt"], color: "#a855f7" },
+  { label: "Tools & DevOps", skills: ["Git", "AWS", "PCF", "Splunk", "CI/CD (GitLab)", "Maven", "Gradle"], color: "#3b8bff" },
+];
+---
+
+<div class="about-root">
+
+  <!-- ═══════════════════════ ATMOSPHERIC BACKGROUND ═══════════════════════ -->
+  <div class="about-bg" aria-hidden="true">
+    <div class="bg-gradient"></div>
+    <div class="bg-vignette"></div>
+    <svg class="bg-hex" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="hex-pattern" width="60" height="52" patternUnits="userSpaceOnUse">
+          <polygon points="30,2 56,16 56,36 30,50 4,36 4,16"
+                   fill="none" stroke="rgba(200,155,60,1)" stroke-width="0.8"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex-pattern)"/>
+    </svg>
+    <div class="bg-bottom-fade"></div>
+  </div>
+
+  <!-- ═══════════════════════ MAIN CHAMPION LAYOUT ═══════════════════════ -->
+  <div class="champion-layout container-responsive">
+
+    <!-- LEFT: Champion Art -->
+    <div class="champion-art-col">
+      <div class="champion-frame">
+        <!-- LoL corner brackets -->
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <!-- Photo -->
+        <div class="champion-photo">
+          <img
+            src="/profile.png"
+            alt="Profile photo"
+            class="champion-img"
+          />
+          <div class="photo-overlay-bottom"></div>
+          <div class="photo-overlay-side"></div>
+        </div>
+
+        <!-- Role badges -->
+        <div class="role-badges">
+          {roles.map(r => (
+            <span class="role-tag">{r}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Champion Info -->
+    <div class="champion-info">
+
+      <!-- Name block -->
+      <div class="name-block">
+        <!-- Top row: name+title on left, Ziggs GIF on right -->
+        <div class="name-top-row">
+          <div class="name-text-col">
+            <h1 class="champion-name">Will Chou</h1>
+            <p class="champion-title">System Engineer · Android &amp; Backend</p>
+          </div>
+          <div class="name-gif-col">
+            <img
+              src="https://cdn.prod.website-files.com/609374cb30dd30b8755c317d/6197692f36cf9f87359efd05_ziggs%202mb.gif"
+              alt="Ziggs animated"
+              class="name-gif"
+            />
+          </div>
+        </div>
+        <!-- Golden divider below the name+gif row -->
+        <div class="name-underline">
+          <div class="underline-solid"></div>
+          <div class="underline-fade"></div>
+        </div>
+      </div>
+
+      <!-- Lore quote -->
+      <blockquote class="champion-lore">
+Engineer. Systems-thinker. Fast-learner. I bridge the gap between complex theory and working products with the precision of a Hextech blade. I thrive in the ‘impossible’—transforming dense documentation into clarity and fragmented code into seamless SDKs      </blockquote>
+
+      <!-- Body copy -->
+      <p class="champion-body">
+My journey began with a 6,000-mile leap from Taiwan to the U.S., where I mastered a new language at 12 and finished a four-year degree in just three. Today, I apply that same high-velocity adaptation at work, architecting the 'invisible plumbing' of global commerce through high-throughput Java microservices and Android payment SDKs. Whether I’m stabilizing fintech infrastructure or shipping side-projects like King of the Hill—which scaled to 4,000 users in a fortnight—I build for speed, clarity, and impact. Currently evolving my kit via a Georgia Tech MS in CS
+      </p>
+
+      <!-- Skills + Fun Facts row -->
+      <div class="meta-row">
+
+        <!-- Tech Skills -->
+        <div class="attributes-block">
+          <p class="meta-label">Technical Skills</p>
+          {skillGroups.map(g => (
+            <div class="skill-group">
+              <span class="skill-group-label" style={`color: ${g.color};`}>{g.label}</span>
+              <div class="skill-tags">
+                {g.skills.map(s => (
+                  <span class="skill-tag" style={`border-color: ${g.color}44; color: ${g.color}cc;`}>{s}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Vertical divider (desktop only) -->
+        <div class="meta-divider" aria-hidden="true"></div>
+
+        <!-- Fun Facts -->
+        <div class="funfacts-block">
+          <p class="meta-label">Side Quests</p>
+          <FunFacts loreMode={true} />
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ ABILITY BAR ═══════════════════════ -->
+  <div id="ability-bar" class="ability-bar container-responsive">
+
+    <!-- Divider -->
+    <div class="ability-header">
+      <div class="ability-divider-line left"></div>
+      <p class="ability-label">Abilities</p>
+      <div class="ability-divider-line right"></div>
+    </div>
+
+    <!-- Ability cards grid -->
+    <div class="ability-grid">
+      {abilities.map((ab) => (
+        <div
+          class={`ability-card group ${ab.locked ? 'locked' : ''}`}
+          style={`border-color: ${ab.locked ? 'rgba(200,155,60,0.1)' : 'rgba(200,155,60,0.18)'};`}
+        >
+          <!-- Corner cut -->
+          <div
+            class="ability-corner-cut"
+            style={`background: ${ab.locked ? 'rgba(200,155,60,0.1)' : ab.color + '44'};`}
+          ></div>
+
+          <!-- Key + Icon -->
+          <div class="ability-top">
+            <div
+              class="key-badge"
+              style={`
+                background: ${ab.locked ? 'rgba(200,155,60,0.1)' : ab.color + '22'};
+                border-color: ${ab.locked ? 'rgba(200,155,60,0.2)' : ab.color};
+                color: ${ab.locked ? 'rgba(200,155,60,0.4)' : ab.color};
+              `}
+            >{ab.key}</div>
+            <div class="ability-icon" style={`color: ${ab.locked ? 'rgba(200,155,60,0.25)' : ab.color};`}>
+              {ab.locked ? '🔒' : ab.icon}
+            </div>
+          </div>
+
+          <!-- Names -->
+          <div class="ability-names">
+            <p class="ability-name" style={`color: ${ab.locked ? 'rgba(200,155,60,0.35)' : '#f0e6d3'};`}>{ab.name}</p>
+            <p class="ability-subtitle" style={`color: ${ab.locked ? 'rgba(200,155,60,0.25)' : ab.color + 'bb'};`}>{ab.subtitle}</p>
+          </div>
+
+          <!-- Description -->
+          <p class="ability-desc">{ab.description}</p>
+
+          <!-- Tooltip -->
+          <div class="ability-tooltip">
+            <p class="ability-tooltip-text">{ab.detail ?? ab.description}</p>
+          </div>
+
+          <!-- Hover glow overlay -->
+          <div
+            class="ability-glow"
+            style={`box-shadow: inset 0 0 20px ${ab.color}18; border-color: ${ab.color}44;`}
+          ></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom pips -->
+    <div class="ability-pips" aria-hidden="true">
+      <div class="pip-line left"></div>
+      <div class="pip-row">
+        {[0,1,2,3].map(() => <div class="pip"></div>)}
+      </div>
+      <div class="pip-line right"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+  /* ─── Root ─── */
+  .about-root {
+    position: relative;
+    width: 100%;
+    background: #050a12;
+    padding-top: 5rem;   /* clear the fixed header */
+    padding-bottom: 3rem;
+    overflow: hidden;
+  }
+
+  /* ─── Background ─── */
+  .about-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 30% 50%, #0d1f3a 0%, #07111f 50%, #050a12 100%);
+  }
+  .bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(5,10,18,0.7) 100%);
+  }
+  .bg-hex {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+  }
+  .bg-bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6rem;
+    background: linear-gradient(to top, #050a12, transparent);
+  }
+
+  /* ─── Champion Layout (two-column on md+, stacked on mobile) ─── */
+  .champion-layout {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .champion-layout {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 2.5rem;
+    }
+  }
+
+  /* ─── Champion art column ─── */
+  .champion-art-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .champion-art-col {
+      width: 200px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .champion-art-col {
+      width: 240px;
+    }
+  }
+
+  .champion-frame {
+    position: relative;
+    width: 160px;
+    filter: drop-shadow(-8px 0 40px rgba(10,200,185,0.08));
+  }
+
+  @media (min-width: 480px) { .champion-frame { width: 180px; } }
+  @media (min-width: 768px) { .champion-frame { width: 100%; } }
+
+  /* Corner brackets */
+  .corner {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .corner::before, .corner::after {
+    content: '';
+    position: absolute;
+    background: #c89b3c;
+  }
+  .corner-tl { top: 0; left: 0; }
+  .corner-tl::before { top: 0; left: 0; width: 100%; height: 1px; }
+  .corner-tl::after  { top: 0; left: 0; width: 1px;  height: 100%; }
+
+  .corner-tr { top: 0; right: 0; }
+  .corner-tr::before { top: 0; right: 0; width: 100%; height: 1px; }
+  .corner-tr::after  { top: 0; right: 0; width: 1px;  height: 100%; }
+
+  .corner-bl { bottom: 0; left: 0; }
+  .corner-bl::before { bottom: 0; left: 0; width: 100%; height: 1px; }
+  .corner-bl::after  { bottom: 0; left: 0; width: 1px;  height: 100%; }
+
+  .corner-br { bottom: 0; right: 0; }
+  .corner-br::before { bottom: 0; right: 0; width: 100%; height: 1px; }
+  .corner-br::after  { bottom: 0; right: 0; width: 1px;  height: 100%; }
+
+  .champion-photo {
+    width: 100%;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(200,155,60,0.2);
+  }
+  .champion-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: contrast(1.05) saturate(0.9);
+    display: block;
+  }
+  .photo-overlay-bottom {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,10,18,0.7) 0%, transparent 50%);
+  }
+  .photo-overlay-side {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(10,200,185,0.04) 0%, transparent 40%);
+  }
+
+  /* Role badges */
+  .role-badges {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+  .role-tag {
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    color: rgba(200,155,60,0.85);
+    border: 1px solid rgba(200,155,60,0.25);
+    background: rgba(200,155,60,0.06);
+  }
+
+  /* ─── Champion info ─── */
+  .champion-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  /* Name */
+  .name-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow: visible;
+  }
+  .name-top-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .name-text-col { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; min-width: 0; }
+  .name-gif-col {
+    flex-shrink: 0;
+    width: clamp(70px, 10vw, 120px);
+    margin-right: 8rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: -2rem;
+  }
+  .name-gif {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(200,155,60,0.3)) brightness(1.05);
+    animation: gif-float 4s ease-in-out infinite;
+  }
+  @keyframes gif-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+
+  .champion-name {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #f0e6d3;
+    margin: 0;
+    text-shadow: 0 0 60px rgba(200,155,60,0.2);
+  }
+
+  .champion-title {
+    font-size: 0.625rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(200,155,60,0.65);
+    margin: 0;
+  }
+
+  .name-underline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  .underline-solid { height: 1px; width: 2rem; background: #c89b3c; flex-shrink: 0; }
+  .underline-fade  { height: 1px; flex: 1; background: linear-gradient(to right, rgba(200,155,60,0.4), transparent); }
+
+  /* Lore */
+  .champion-lore {
+    margin: 0;
+    border-left: 2px solid rgba(200,155,60,0.25);
+    padding-left: 1.25rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.78rem);
+    line-height: 1.75;
+    color: rgba(200,185,140,0.75);
+    font-style: italic;
+    font-family: Georgia, serif;
+  }
+
+  /* Body */
+  .champion-body {
+    margin: 0;
+    font-size: clamp(0.7rem, 1.5vw, 0.78rem);
+    line-height: 1.75;
+    color: rgba(150,148,160,0.85);
+  }
+
+  /* Meta row: skills + fun facts — side by side on wider screens */
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .meta-row {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+
+  .attributes-block {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .meta-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(200,155,60,0.5);
+    margin: 0 0 0.5rem;
+  }
+
+
+  .skill-group {
+    margin-bottom: 0.45rem;
+  }
+
+  .skill-group-label {
+    display: block;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .skill-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.03);
+    white-space: nowrap;
+  }
+
+
+  .meta-divider {
+    display: none;
+    align-self: stretch;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(200,155,60,0.4), transparent);
+    flex-shrink: 0;
+  }
+  @media (min-width: 560px) { .meta-divider { display: block; } }
+
+  .funfacts-block { flex: 1; min-width: 0; }
+
+  /* ─── Ability Bar ─── */
+  .ability-bar {
+    position: relative;
+    z-index: 10;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .ability-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .ability-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(200,155,60,0.55);
+    white-space: nowrap;
+    margin: 0;
+  }
+  .ability-divider-line {
+    height: 1px;
+    flex: 1;
+  }
+  .ability-divider-line.left  { background: linear-gradient(to right, transparent, rgba(200,155,60,0.35)); }
+  .ability-divider-line.right { background: linear-gradient(to left,  transparent, rgba(200,155,60,0.35)); }
+
+  /* Grid: 1 col on mobile, 2 on sm, 4 on md+ */
+  .ability-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .ability-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .ability-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.625rem;
+    background: rgba(7,17,31,0.8);
+    border: 1px solid;
+    cursor: default;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .ability-card:not(.locked):hover {
+    border-color: rgba(200,155,60,0.35) !important;
+    transform: translateY(-2px);
+  }
+
+  .ability-corner-cut {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+  }
+
+  .ability-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .key-badge {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 700;
+    font-family: monospace;
+    border: 1px solid;
+    animation: ability-idle 3s ease-in-out infinite;
+  }
+  .locked .key-badge { animation: none; }
+
+  .ability-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .ability-names { display: flex; flex-direction: column; gap: 0; }
+  .ability-name {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+  .ability-subtitle {
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 0.125rem;
+  }
+
+  .ability-desc {
+    font-size: 0.6rem;
+    line-height: 1.5;
+    color: rgba(150,148,160,0.75);
+    margin: 0;
+    /* Show description on all screen sizes */
+  }
+
+  /* Show full desc only on larger cards */
+  @media (max-width: 479px) {
+    .ability-desc { font-size: 0.575rem; }
+  }
+
+  /* Tooltip on hover */
+  .ability-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    background: rgba(5,10,18,0.97);
+    border: 1px solid rgba(200,155,60,0.3);
+  }
+  .ability-card:hover .ability-tooltip { opacity: 1; }
+  .ability-tooltip-text {
+    font-size: 0.625rem;
+    line-height: 1.7;
+    color: rgba(200,185,140,0.8);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .ability-glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border: 1px solid transparent;
+  }
+  .ability-card:hover .ability-glow { opacity: 1; }
+
+  /* Pips */
+  .ability-pips {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .pip-line { flex: 1; height: 1px; }
+  .pip-line.left  { background: linear-gradient(to right, transparent, rgba(200,155,60,0.2)); }
+  .pip-line.right { background: linear-gradient(to left,  transparent, rgba(200,155,60,0.2)); }
+  .pip-row { display: flex; gap: 0.5rem; align-items: center; }
+  .pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(200,155,60,0.5);
+  }
+
+  /* ─── Keyframes ─── */
+  @keyframes stat-fill {
+    from { width: 0%; }
+  }
+
+  @keyframes ability-idle {
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1; }
+  }
+</style>

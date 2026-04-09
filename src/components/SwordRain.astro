@@ -1,0 +1,150 @@
+---
+---
+
+<canvas
+  id="sword-rain"
+  class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+<script>
+  const canvas = document.getElementById("sword-rain") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d")!;
+
+  let centerX: number;
+  let centerY: number;
+
+  // Ring configuration: each ring has a fixed radius, number of swords, and rotation speed
+  const RINGS = [
+    {
+      radius: 400,
+      count: 18,
+      speed: 0.0003,
+      direction: -1,
+      length: 45,
+      opacity: 0.28,
+    },
+    {
+      radius: 540,
+      count: 22,
+      speed: 0.00025,
+      direction: 1,
+      length: 55,
+      opacity: 0.22,
+    },
+    {
+      radius: 700,
+      count: 26,
+      speed: 0.0002,
+      direction: -1,
+      length: 45,
+      opacity: 0.17,
+    },
+    {
+      radius: 880,
+      count: 30,
+      speed: 0.00015,
+      direction: 1,
+      length: 40,
+      opacity: 0.12,
+    },
+    {
+      radius: 1080,
+      count: 34,
+      speed: 0.0001,
+      direction: -1,
+      length: 35,
+      opacity: 0.08,
+    },
+  ];
+
+  interface Sword {
+    ringIndex: number;
+    angle: number;
+    length: number;
+    opacity: number;
+  }
+
+  let swords: Sword[] = [];
+  let ringAngles: number[] = RINGS.map(() => 0);
+
+  function resize() {
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.setTransform(
+      window.devicePixelRatio,
+      0,
+      0,
+      window.devicePixelRatio,
+      0,
+      0
+    );
+    centerX = canvas.offsetWidth / 2;
+    centerY = canvas.offsetHeight / 2;
+  }
+
+  function init() {
+    resize();
+    swords = [];
+
+    RINGS.forEach((ring, ringIndex) => {
+      const angleStep = (Math.PI * 2) / ring.count;
+      for (let i = 0; i < ring.count; i++) {
+        swords.push({
+          ringIndex,
+          angle: angleStep * i,
+          length: ring.length + (Math.random() - 0.5) * 16,
+          opacity: ring.opacity + (Math.random() - 0.5) * 0.06,
+        });
+      }
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+    // Advance each ring's rotation
+    RINGS.forEach((ring, i) => {
+      ringAngles[i] += ring.speed * ring.direction;
+    });
+
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+
+    for (const sword of swords) {
+      const ring = RINGS[sword.ringIndex];
+      const totalAngle = sword.angle + ringAngles[sword.ringIndex];
+
+      const x = centerX + Math.cos(totalAngle) * ring.radius;
+      const y = centerY + Math.sin(totalAngle) * ring.radius;
+
+      // Fade swords that are near screen edges
+      const edgeDist = Math.min(x, y, w - x, h - y);
+      let alpha = sword.opacity;
+      if (edgeDist < 80) {
+        alpha *= Math.max(0, edgeDist / 80);
+      }
+
+      if (alpha < 0.01) continue;
+
+      // Draw — each sword is tangent to the ring (perpendicular to radius)
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(totalAngle + Math.PI / 2);
+
+      ctx.beginPath();
+      ctx.moveTo(0, -sword.length / 2);
+      ctx.lineTo(0, sword.length / 2);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = "round";
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener("resize", resize);
+</script>

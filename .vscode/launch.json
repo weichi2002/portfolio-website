@@ -3,9 +3,22 @@
   "configurations": [
     {
       "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "name": "Dev server (Astro)",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome Against Localhost",
+      "url": "http://localhost:4321",
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack Dev & Debug",
+      "configurations": ["Dev server (Astro)", "Launch Chrome Against Localhost"]
     }
   ]
 }

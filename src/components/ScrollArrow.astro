@@ -1,44 +1,86 @@
 ---
+interface Props {
+  target: string;
+  label: string;
+  direction?: "up" | "down";
+}
+const { target, label, direction = "down" } = Astro.props;
 ---
 
-<div class="scroll-arrow-wrapper flex justify-center relative z-10">
+<div class="flex justify-center relative z-10">
   <button
-    id="scroll-arrow"
-    class="scroll-arrow text-text-muted hover:text-accent transition-colors duration-200 cursor-pointer bg-transparent border-none p-2"
-    aria-label="Scroll to projects"
+    class="nav-arrow group flex flex-col items-center gap-1.5 text-text-muted hover:text-text transition-colors duration-300 cursor-pointer bg-transparent border-none p-3"
+    aria-label={`Go to ${label}`}
+    data-target={target}
+    data-direction={direction}
     type="button"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+    {
+      direction === "up" && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="nav-arrow-icon"
+        >
+          <polyline points="18 15 12 9 6 15" />
+        </svg>
+      )
+    }
+    <span
+      class="text-[10px] tracking-[0.2em] uppercase opacity-50 group-hover:opacity-100 transition-opacity duration-300"
     >
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
+      {label}
+    </span>
+    {
+      direction === "down" && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="nav-arrow-icon"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      )
+    }
   </button>
 </div>
 
 <style>
-  .scroll-arrow {
+  .nav-arrow-icon {
     animation: bounce-subtle 2s ease-in-out infinite;
   }
-
-  .scroll-arrow:hover {
+  .nav-arrow:hover .nav-arrow-icon {
     animation-play-state: paused;
   }
 </style>
 
 <script>
-  document.getElementById('scroll-arrow')?.addEventListener('click', () => {
-    const target = document.getElementById('projects');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+  document.querySelectorAll("[data-target][data-direction]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const el = e.currentTarget as HTMLButtonElement;
+      const targetId = el.dataset.target ?? "";
+      const target = document.getElementById(targetId);
+      const main = document.querySelector("main");
+      if (target && main) {
+        main.scrollTo({
+          top: target.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    });
   });
 </script>

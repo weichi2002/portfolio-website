@@ -1,58 +1,138 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
+/* ═══════════════════════════════════════════════
+   FONTS
+═══════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600&display=swap');
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #050a12;
+  color: #e8e8ed;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #070d1a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 155, 60, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 155, 60, 0.5);
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+main {
+  width: 100%;
+}
+
+main > section {
+  width: 100%;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
 @theme {
-  --color-bg: #0b0b10;
-  --color-bg-soft: #111118;
+  --color-bg: #050a12;
+  --color-bg-soft: #070d1a;
+  --color-bg-card: #0d1828;
   --color-accent: #3b8bff;
   --color-accent-soft: rgba(59, 139, 255, 0.1);
-  --color-mint: rgba(16, 185, 129, 0.08);
+  --color-gold: #c89b3c;
+  --color-gold-soft: rgba(200, 155, 60, 0.1);
+  --color-mint: rgba(10, 200, 185, 0.08);
   --color-text: #e8e8ed;
   --color-text-muted: #8b8b9e;
-  --color-card-bg: #16161e;
-  --color-card-shadow: rgba(0, 0, 0, 0.3);
-  --color-border: #2a2a3a;
-  --font-sans: 'Inter', sans-serif;
+  --color-card-bg: #0d1828;
+  --color-card-shadow: rgba(0, 0, 0, 0.4);
+  --color-border: rgba(200, 155, 60, 0.18);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Cinzel', Georgia, serif;
 }
 
-.flip-card {
-  perspective: 1000px;
-  cursor: pointer;
-}
-.flip-card-inner {
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-.flip-card.flipped .flip-card-inner {
-  transform: rotateY(180deg);
-}
-.flip-card-front,
-.flip-card-back {
-  backface-visibility: hidden;
-}
-.flip-card-back {
-  transform: rotateY(180deg);
+/* ═══════════════════════════════════════════════
+   RESPONSIVE UTILITIES
+═══════════════════════════════════════════════ */
+
+/* Container with responsive padding */
+.container-responsive {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
 @keyframes bounce-subtle {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  50%       { transform: translateY(6px); }
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
 
 .fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

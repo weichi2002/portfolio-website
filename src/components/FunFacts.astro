@@ -1,29 +1,344 @@
 ---
-const facts = [
-  { category: "Travel", emoji: "\u{1F30D}", fact: "I've visited 12 countries and counting" },
-  { category: "Code", emoji: "\u{1F4BB}", fact: "My first program was a calculator in Python" },
-  { category: "Food", emoji: "\u{1F355}", fact: "I can make pasta from scratch in 30 minutes" },
+import TravelCard from "./funfacts/TravelCard.astro";
+import ConcertsCard from "./funfacts/ConcertsCard.astro";
+import InvestingCard from "./funfacts/InvestingCard.astro";
+
+interface Props {
+  loreMode?: boolean;
+}
+const { loreMode = false } = Astro.props;
+
+const cards = [
+  { id: "travel", category: "Travel" },
+  { id: "concerts", category: "Concerts" },
+  { id: "investing", category: "Investing" },
 ];
 ---
 
-<div class="flex flex-wrap justify-center gap-6">
-  {facts.map((item) => (
-    <div class="flip-card w-[220px] h-[200px]">
-      <div class="flip-card-inner relative w-full h-full">
-        <div class="flip-card-front absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.3)] border border-border">
-          <span class="text-5xl mb-3">{item.emoji}</span>
-          <span class="text-text-muted text-sm font-medium tracking-wide">{item.category}</span>
+<!-- Fun Facts Section -->
+<div
+  class={loreMode ? "w-full" : "flex flex-col items-center gap-8 px-6 w-full"}
+>
+  {/* Header — only shown outside loreMode */}
+  {
+    !loreMode && (
+      <div class="text-center">
+        <p class="text-text-muted text-xs uppercase tracking-[0.2em] mb-1">
+          About Me
+        </p>
+        <h2 class="text-text text-2xl md:text-3xl font-semibold">Fun Facts</h2>
+      </div>
+    )
+  }
+
+  {/* Card trigger row — row layout on mobile to prevent vertical stacking */}
+  <div class={loreMode ? "flex flex-row flex-wrap md:flex-nowrap justify-start gap-4 md:gap-3" : "flex flex-row justify-start gap-4 flex-wrap"}>
+    {
+      cards.map((card) => (
+        <button
+          class="fun-card-trigger group flex flex-col items-center gap-2 bg-transparent cursor-pointer transition-all duration-300 hover:scale-105 border-none p-0"
+          data-card={card.id}
+        >
+          {/* Fixed-height preview container */}
+          <div
+            class={`flex items-center justify-center overflow-hidden ${
+              loreMode ? "w-24 h-24 md:w-32 md:h-32" : "w-full h-32 md:h-36"
+            }`}
+          >
+            {/* Travel: mini globe */}
+            {card.id === "travel" && (
+              <div
+                class={`transition-transform duration-300 group-hover:scale-110 pointer-events-none ${
+                  loreMode
+                    ? "w-20 h-20 md:w-28 md:h-28"
+                    : "w-24 h-24 md:w-32 md:h-32"
+                }`}
+              >
+                <div
+                  id="mini-globe"
+                  class="w-full h-full rounded-full overflow-hidden"
+                />
+              </div>
+            )}
+
+            {/* Concerts: mini receipt */}
+            {card.id === "concerts" && (
+              <div
+                class={`bg-[#f5f0e8] rounded-sm px-1.5 py-1 transition-transform duration-300 group-hover:scale-110 overflow-hidden ${
+                  loreMode ? "w-16 md:w-20" : "w-20 md:w-24"
+                }`}
+              >
+                <div class="text-[5px] font-mono text-[#1a1a1a] text-center leading-[1.4]">
+                  <p class="font-bold text-[6px] tracking-wider">RECEIPT</p>
+                  <div class="border-t border-dashed border-[#999] my-0.5" />
+                  <p>01 TWICE</p>
+                  <p>02 MAROON 5</p>
+                  <p>03 DUA LIPA</p>
+                  <p>04 WEEKND</p>
+                  <p>05 KENDRICK</p>
+                  <p>06 POST MALONE</p>
+                  <p>07 BILLIE EILISH</p>
+                  <p>08 BRUNO MARS</p>
+                  <div class="border-t border-dashed border-[#999] my-0.5" />
+                  <p class="font-bold">TOTAL: 8 SHOWS</p>
+                </div>
+              </div>
+            )}
+
+            {/* Investing: mini 3D pie chart */}
+            {card.id === "investing" && (
+              <div
+                class={`transition-transform duration-300 group-hover:scale-110 overflow-hidden ${
+                  loreMode
+                    ? "w-20 h-20 md:w-28 md:h-28"
+                    : "w-24 h-24 md:w-32 md:h-32"
+                }`}
+              >
+                <div id="mini-chart-3d" class="w-full h-full" />
+              </div>
+            )}
+          </div>
+
+          <span
+            class={`font-medium transition-colors duration-200 ${
+              loreMode
+                ? "text-[10px] tracking-[0.2em] uppercase"
+                : "text-text text-sm md:text-base"
+            }`}
+            style={loreMode ? "color: rgba(200,155,60,0.7);" : ""}
+          >
+            {card.category}
+          </span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<!-- Modal dialogs -->
+{
+  cards.map((card) => (
+    <div
+      class="fun-modal fixed inset-0 z-[100] hidden items-center justify-center"
+      data-modal={card.id}
+    >
+      <div class="fun-modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div class="fun-modal-dialog relative w-[90vw] max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl bg-card-bg border border-border shadow-[0_25px_60px_rgba(0,0,0,0.5)] p-6 md:p-8">
+        <button class="fun-modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-text-muted hover:text-text hover:bg-white/5 transition-colors">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <div class="flex items-center gap-3 mb-6">
+          <h2 class="text-text text-2xl font-semibold">{card.category}</h2>
         </div>
-        <div class="flip-card-back absolute inset-0 flex items-center justify-center rounded-xl bg-accent-soft p-5 shadow-[0_0_20px_rgba(59,139,255,0.25)] border border-accent/20">
-          <p class="text-text text-center text-sm leading-relaxed">{item.fact}</p>
+        <div class="fun-modal-content">
+          {card.id === "travel" && <TravelCard />}
+          {card.id === "concerts" && <ConcertsCard />}
+          {card.id === "investing" && <InvestingCard />}
         </div>
       </div>
     </div>
-  ))}
-</div>
+  ))
+}
 
 <script>
-  document.querySelectorAll('.flip-card').forEach(card => {
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  // Mini globe on the travel trigger card
+  import Globe from "globe.gl";
+
+  const miniGlobeEl = document.getElementById("mini-globe");
+  if (miniGlobeEl) {
+    const size = miniGlobeEl.offsetWidth;
+    const mini = Globe()
+      .globeImageUrl(
+        "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+      )
+      .backgroundColor("rgba(0,0,0,0)")
+      .showAtmosphere(false)
+      .width(size)
+      .height(size)(miniGlobeEl);
+
+    const controls = mini.controls();
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.2;
+    controls.enableZoom = false;
+    controls.enableRotate = false;
+    controls.enablePan = false;
+    mini.pointOfView({ lat: 20, lng: 0, altitude: 2.5 }, 0);
+  }
+
+  // Mini 3D pie chart
+  import * as THREE from "three";
+
+  const miniContainer = document.getElementById("mini-chart-3d");
+  if (miniContainer) {
+    const size = miniContainer.offsetWidth;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+    camera.position.set(0, -3, 28);
+    camera.lookAt(0, 0.5, 0);
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(size, size);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    miniContainer.appendChild(renderer.domElement);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.8);
+    dir.position.set(3, 10, 8);
+    scene.add(dir);
+    const purple = new THREE.PointLight(0xc084fc, 1.0, 30);
+    purple.position.set(0, -5, 3);
+    scene.add(purple);
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const innerR = 4,
+      outerR = 6,
+      depth = 1.8,
+      gap = 0.12;
+    const colors = [0xa855f7, 0xc084fc, 0xe879f9, 0x7c3aed];
+    const values = [40, 30, 20, 10];
+    let angle = 0;
+
+    values.forEach((val, i) => {
+      const slice = (val / 100) * Math.PI * 2;
+      const len = slice - gap;
+      const shape = new THREE.Shape();
+      shape.absarc(0, 0, outerR, angle + gap / 2, angle + gap / 2 + len, false);
+      shape.absarc(0, 0, innerR, angle + gap / 2 + len, angle + gap / 2, true);
+      const geo = new THREE.ExtrudeGeometry(shape, {
+        depth,
+        bevelEnabled: true,
+        bevelSegments: 4,
+        steps: 1,
+        bevelSize: 0.3,
+        bevelThickness: 0.25,
+      });
+      geo.translate(0, 0, -depth / 2);
+      const mat = new THREE.MeshPhysicalMaterial({
+        color: colors[i],
+        emissive: colors[i],
+        emissiveIntensity: 0.3,
+        transmission: 0.35,
+        opacity: 0.9,
+        transparent: true,
+        roughness: 0.08,
+        metalness: 0.15,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.03,
+        ior: 1.6,
+      });
+      group.add(new THREE.Mesh(geo, mat));
+      angle += slice;
+    });
+
+    group.rotation.x = -Math.PI / 4.5;
+    let t = 0;
+    function anim() {
+      requestAnimationFrame(anim);
+      t += 0.008;
+      group.rotation.z += 0.003;
+      group.position.y = Math.sin(t) * 0.3;
+      renderer.render(scene, camera);
+    }
+    anim();
+  }
+
+  // Modal open/close
+  document.querySelectorAll(".fun-card-trigger").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = (btn as HTMLElement).dataset.card;
+      const modal = document.querySelector(
+        `[data-modal="${id}"]`
+      ) as HTMLElement;
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      const mainEl = document.querySelector("main");
+      if (mainEl) (mainEl as HTMLElement).style.overflow = "hidden";
+      const abilityBar = document.getElementById("ability-bar");
+      if (abilityBar) abilityBar.style.display = "none";
+      requestAnimationFrame(() => {
+        modal
+          .querySelector(".fun-modal-backdrop")
+          ?.classList.add("opacity-100");
+        modal
+          .querySelector(".fun-modal-dialog")
+          ?.classList.add("scale-100", "opacity-100");
+      });
+      modal.dispatchEvent(new CustomEvent("card:open", { bubbles: true }));
+    });
+  });
+
+  function closeModal(modal: HTMLElement) {
+    modal
+      .querySelector(".fun-modal-dialog")
+      ?.classList.remove("scale-100", "opacity-100");
+    modal.querySelector(".fun-modal-backdrop")?.classList.remove("opacity-100");
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      document.body.style.overflow = "";
+      const mainEl = document.querySelector("main");
+      if (mainEl) (mainEl as HTMLElement).style.overflow = "";
+      const abilityBar = document.getElementById("ability-bar");
+      if (abilityBar) abilityBar.style.display = "";
+    }, 200);
+  }
+
+  document.querySelectorAll(".fun-modal-close").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const modal = btn.closest(".fun-modal") as HTMLElement;
+      if (modal) closeModal(modal);
+    });
+  });
+
+  document.querySelectorAll(".fun-modal-backdrop").forEach((backdrop) => {
+    backdrop.addEventListener("click", () => {
+      const modal = backdrop.closest(".fun-modal") as HTMLElement;
+      if (modal) closeModal(modal);
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const open = document.querySelector(".fun-modal.flex") as HTMLElement;
+      if (open) closeModal(open);
+    }
   });
 </script>
+
+<style>
+  .fun-modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .fun-modal-dialog {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .fun-modal-dialog.scale-100 {
+    transform: scale(1);
+  }
+  .fun-modal-dialog.opacity-100,
+  .fun-modal-backdrop.opacity-100 {
+    opacity: 1;
+  }
+</style>

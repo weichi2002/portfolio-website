@@ -1,0 +1,104 @@
+---
+const concerts = [
+  { artist: "Twice", venue: "Atlanta", date: "Feb 2026" },
+  { artist: "Maroon 5", venue: "Atlanta", date: "Nov 2025" },
+  { artist: "Bryan Adams", venue: "Atlanta", date: "Nov 2025" },
+  { artist: "Dua Lipa", venue: "Atlanta", date: "Sep 2025" },
+  { artist: "The Weeknd + Playboi Carti", venue: "Orlando", date: "Aug 2025" },
+  { artist: "Katy Perry", venue: "Atlanta", date: "Aug 2025" },
+  { artist: "BIBI", venue: "Atlanta", date: "Jun 2025" },
+  { artist: "Kendrick Lamar + SZA", venue: "Atlanta", date: "Apr 2025" },
+  { artist: "Post Malone", venue: "Hartford", date: "Nov 2024" },
+  { artist: "Avril Lavigne", venue: "Alpharetta", date: "Sep 2024" },
+  { artist: "IU", venue: "Atlanta", date: "Jul 2024" },
+  { artist: "Travis Scott", venue: "Philly", date: "Dec 2023" },
+  { artist: "John Mayer", venue: "Baltimore", date: "Oct 2023" },
+  { artist: "NIKI", venue: "NYC", date: "Aug 2023" },
+  { artist: "BlackPink", venue: "Newark", date: "Aug 2023" },
+  { artist: "Drake + 21 Savage", venue: "NYC", date: "Jul 2023" },
+  { artist: "Post Malone", venue: "Trenton", date: "Jul 2023" },
+  { artist: "Ed Sheeran + Khalid", venue: "Philly", date: "Jun 2023" },
+  { artist: "Keshi", venue: "Philly", date: "Mar 2023" },
+  { artist: "John Mayer", venue: "Newark", date: "Mar 2023" },
+  { artist: "Post Malone", venue: "Philly", date: "Nov 2022" },
+  { artist: "Keshi", venue: "Atlanta", date: "May 2022" },
+  { artist: "Rex Orange County", venue: "Nashville", date: "May 2022" },
+  { artist: "John Mayer", venue: "Philly", date: "Feb 2022" },
+  { artist: "Alec Benjamin", venue: "Philly", date: "Oct 2021" },
+];
+---
+
+<div class="flex justify-center">
+  <div class="receipt-paper w-full max-w-[340px] bg-[#f5f0e8] text-[#1a1a1a] rounded-sm px-5 py-6 font-mono text-xs leading-relaxed shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+
+    <!-- Header -->
+    <div class="text-center mb-3">
+      <p class="text-sm font-bold tracking-widest uppercase">Concerts Receipt</p>
+      <p class="text-[10px] text-[#666]">Customer: Will Chou</p>
+      <p class="text-[10px] text-[#666]">Date: {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    </div>
+
+    <div class="border-t border-dashed border-[#999] my-3"></div>
+
+    <!-- Column headers -->
+    <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-[#555] mb-1">
+      <span>#</span>
+      <span class="flex-1 ml-2">ARTIST</span>
+      <span>DATE</span>
+    </div>
+
+    <div class="border-t border-dashed border-[#999] my-2"></div>
+
+    <!-- Scrollable concert list -->
+    <div class="max-h-[280px] overflow-y-auto receipt-scroll">
+      {concerts.map((concert, i) => (
+        <div class="flex justify-between items-start py-1.5 border-b border-dotted border-[#ccc] last:border-0">
+          <span class="text-[#888] w-6 shrink-0">{String(i + 1).padStart(2, ' ')}</span>
+          <div class="flex-1 mx-2 min-w-0">
+            <p class="font-bold text-[11px] uppercase truncate">{concert.artist}</p>
+            <p class="text-[9px] text-[#777] truncate">{concert.venue}</p>
+          </div>
+          <span class="shrink-0 text-[10px] text-[#888] whitespace-nowrap">{concert.date}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="border-t border-dashed border-[#999] my-3"></div>
+
+    <!-- Total -->
+    <div class="flex justify-between font-bold text-sm">
+      <span>TOTAL SHOWS</span>
+      <span>{concerts.length}</span>
+    </div>
+
+    <div class="border-t border-dashed border-[#999] my-3"></div>
+
+    <!-- Footer -->
+    <div class="text-center text-[10px] text-[#888]">
+      <p class="text-[9px] mt-2 text-[#aaa]">--- NO REFUNDS ON MEMORIES ---</p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .receipt-paper {
+    font-family: 'Courier New', 'Courier', monospace;
+    background-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.02) 50%, transparent 100%);
+    box-shadow:
+      0 10px 40px rgba(0,0,0,0.4),
+      inset 0 0 60px rgba(0,0,0,0.03);
+  }
+
+  .receipt-scroll::-webkit-scrollbar {
+    width: 3px;
+  }
+  .receipt-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .receipt-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+</style>

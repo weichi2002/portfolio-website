@@ -1,0 +1,526 @@
+---
+const segmentsInfo = [
+  {
+    label: "ETFs",
+    value: 40,
+    color: "#a855f7",
+    details: "Core market index tracking",
+  },
+  {
+    label: "Stocks",
+    value: 30,
+    color: "#c084fc",
+    details: "Individual growth companies",
+  },
+  {
+    label: "Crypto",
+    value: 20,
+    color: "#e879f9",
+    details: "Digital assets and Web3",
+  },
+  {
+    label: "Bonds",
+    value: 10,
+    color: "#7c3aed",
+    details: "Fixed income and stability",
+  },
+];
+---
+
+<div
+  class="flex flex-col items-center py-6 h-full relative overflow-hidden select-none"
+>
+  <!-- Dynamic labels -->
+  <div class="h-[70px] flex flex-col items-center justify-end z-10 w-full mb-2">
+    <div
+      id="invest-label"
+      class="text-text font-semibold text-lg tracking-wide transition-opacity duration-300"
+    >
+      Overview
+    </div>
+    <div
+      id="invest-value"
+      class="text-2xl font-bold transition-all duration-300 drop-shadow-md"
+    >
+    </div>
+  </div>
+
+  <!-- 3D Canvas Container with navigation arrows -->
+  <div
+    class="w-full max-w-[400px] flex items-center justify-center gap-2 relative"
+  >
+    <!-- Left arrow -->
+    <button
+      id="invest-prev"
+      class="z-20 flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-border hover:bg-white/10 hover:border-white/20 text-text-muted hover:text-text transition-all duration-200 cursor-pointer"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <!-- 3D chart -->
+    <div
+      id="invest-chart-3d"
+      class="w-full max-w-[340px] aspect-square relative touch-none cursor-grab active:cursor-grabbing"
+    >
+    </div>
+
+    <!-- Right arrow -->
+    <button
+      id="invest-next"
+      class="z-20 flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-border hover:bg-white/10 hover:border-white/20 text-text-muted hover:text-text transition-all duration-200 cursor-pointer"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Dynamic Details -->
+  <div
+    id="invest-details"
+    class="text-text-muted text-sm text-center max-w-[280px] mt-2 min-h-[48px] px-4 transition-opacity duration-300 leading-relaxed z-10"
+  >
+    Interact with the ring to view asset details.
+  </div>
+
+  <!-- Hidden data for script -->
+  <div
+    id="invest-data"
+    class="hidden"
+    data-segments={JSON.stringify(segmentsInfo)}
+  >
+  </div>
+</div>
+
+<script>
+  import * as THREE from "three";
+
+  let initialized = false;
+
+  function initChart() {
+    if (initialized) return;
+    initialized = true;
+
+    const container = document.getElementById("invest-chart-3d");
+    if (!container) return;
+
+    const dataEl = document.getElementById("invest-data");
+    if (!dataEl || !dataEl.dataset.segments) return;
+    const segmentsInfo = JSON.parse(dataEl.dataset.segments);
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+
+    // Camera — view from slightly below like the Robinhood reference
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 1000);
+    camera.position.set(0, -6, 38);
+    camera.lookAt(0, 1, 0);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    container.appendChild(renderer.domElement);
+
+    // Lighting for glossy purple materials
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    dirLight.position.set(5, 15, 10);
+    scene.add(dirLight);
+
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight2.position.set(-8, 5, 12);
+    scene.add(dirLight2);
+
+    const fillLight = new THREE.DirectionalLight(0xd8b4fe, 1.0);
+    fillLight.position.set(-10, -5, 5);
+    scene.add(fillLight);
+
+    const backLight = new THREE.PointLight(0xc084fc, 2.0, 60);
+    backLight.position.set(0, -10, -5);
+    scene.add(backLight);
+
+    const topLight = new THREE.PointLight(0xe9d5ff, 1.5, 50);
+    topLight.position.set(0, 12, 5);
+    scene.add(topLight);
+
+    const rimLight = new THREE.PointLight(0xffffff, 1.0, 40);
+    rimLight.position.set(10, 0, -8);
+    scene.add(rimLight);
+
+    // Create environment map for realistic reflections (essential for glassy look)
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0x1a1a2e);
+    // Add colored lights to the env scene for purple-tinted reflections
+    const envLight1 = new THREE.PointLight(0xc084fc, 8, 100);
+    envLight1.position.set(10, 10, 10);
+    envScene.add(envLight1);
+    const envLight2 = new THREE.PointLight(0xe879f9, 6, 100);
+    envLight2.position.set(-10, -5, -10);
+    envScene.add(envLight2);
+    const envLight3 = new THREE.PointLight(0xffffff, 10, 100);
+    envLight3.position.set(0, 15, 0);
+    envScene.add(envLight3);
+    const envLight4 = new THREE.PointLight(0xa855f7, 5, 100);
+    envLight4.position.set(-5, -10, 10);
+    envScene.add(envLight4);
+    const envTexture = pmremGenerator.fromScene(envScene).texture;
+    scene.environment = envTexture;
+    pmremGenerator.dispose();
+
+    // Build the hollow ring chart using ExtrudeGeometry
+    const chartGroup = new THREE.Group();
+    scene.add(chartGroup);
+
+    const innerR = 6.5;
+    const outerR = 9.5;
+    const depth = 3.0;
+
+    // Start at right, go counter-clockwise
+    let startAngle = 0;
+    const gapAngle = 0.12;
+
+    const meshes: THREE.Mesh[] = [];
+
+    segmentsInfo.forEach((seg: any, i: number) => {
+      const sliceAngle = (seg.value / 100) * Math.PI * 2;
+      const angleLength = sliceAngle - gapAngle;
+
+      const shape = new THREE.Shape();
+      shape.absarc(
+        0,
+        0,
+        outerR,
+        startAngle + gapAngle / 2,
+        startAngle + gapAngle / 2 + angleLength,
+        false
+      );
+      shape.absarc(
+        0,
+        0,
+        innerR,
+        startAngle + gapAngle / 2 + angleLength,
+        startAngle + gapAngle / 2,
+        true
+      );
+
+      const extrudeSettings = {
+        depth: depth,
+        bevelEnabled: true,
+        bevelSegments: 6,
+        steps: 1,
+        bevelSize: 0.45,
+        bevelThickness: 0.4,
+      };
+
+      const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      geometry.translate(0, 0, -depth / 2); // Center on Z
+
+      const material = new THREE.MeshPhysicalMaterial({
+        color: 0x2a1a3e,
+        emissive: 0x000000,
+        transmission: 0.15,
+        opacity: 0.85,
+        transparent: true,
+        roughness: 0.05,
+        metalness: 0.15,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.02,
+        reflectivity: 1.0,
+        ior: 2.0,
+        sheen: 1.0,
+        sheenRoughness: 0.2,
+        sheenColor: new THREE.Color(0xc084fc),
+        envMapIntensity: 1.5,
+      });
+
+      const mesh = new THREE.Mesh(geometry, material);
+
+      const midAngle = startAngle + gapAngle / 2 + angleLength / 2;
+      mesh.userData = {
+        index: i,
+        seg: seg,
+        midAngle: midAngle,
+        baseColor: new THREE.Color(seg.color),
+      };
+
+      chartGroup.add(mesh);
+      meshes.push(mesh);
+
+      startAngle += sliceAngle;
+    });
+
+    // Tilt the whole chart to view from slightly below
+    chartGroup.rotation.x = -Math.PI / 4.5;
+
+    let activeIndex = 0;
+
+    function updateActiveSegment(index: number) {
+      if (index === activeIndex && meshes[activeIndex]?.position.z === 1.5)
+        return;
+      activeIndex = index;
+
+      meshes.forEach((m, i) => {
+        const mat = m.material as THREE.MeshPhysicalMaterial;
+        if (i === activeIndex) {
+          // Bright glossy active state — maximum shine
+          mat.color.copy(m.userData.baseColor);
+          mat.emissive.copy(m.userData.baseColor);
+          mat.emissiveIntensity = 0.4;
+          mat.transmission = 0.3;
+          mat.opacity = 1.0;
+          mat.roughness = 0.02;
+          mat.metalness = 0.05;
+          mat.clearcoat = 1.0;
+          mat.clearcoatRoughness = 0.01;
+          mat.sheen = 1.0;
+          mat.sheenRoughness = 0.15;
+          mat.sheenColor = m.userData.baseColor;
+          mat.envMapIntensity = 2.0;
+
+          // Pop out
+          m.position.z = 1.5;
+          m.scale.set(1.03, 1.03, 1.03);
+        } else {
+          // Dark glassy inactive state — still glossy but subdued
+          mat.color.setHex(0x2a1a3e);
+          mat.emissive.copy(m.userData.baseColor);
+          mat.emissiveIntensity = 0.06;
+          mat.transmission = 0.1;
+          mat.opacity = 0.6;
+          mat.roughness = 0.08;
+          mat.metalness = 0.2;
+          mat.clearcoat = 1.0;
+          mat.clearcoatRoughness = 0.05;
+          mat.sheen = 0.5;
+          mat.sheenRoughness = 0.3;
+          mat.sheenColor = m.userData.baseColor;
+          mat.envMapIntensity = 0.8;
+
+          m.position.z = 0;
+          m.scale.set(1, 1, 1);
+        }
+      });
+
+      // Update UI Text
+      const labelEl = document.getElementById("invest-label");
+      const valEl = document.getElementById("invest-value");
+      const detailsEl = document.getElementById("invest-details");
+
+      const seg = segmentsInfo[index];
+      if (labelEl) {
+        labelEl.style.opacity = "0";
+        labelEl.textContent = seg.label;
+        setTimeout(() => (labelEl.style.opacity = "1"), 50);
+      }
+      if (valEl) {
+        valEl.style.opacity = "0";
+        valEl.textContent = seg.value + "%";
+        valEl.style.color = seg.color;
+        setTimeout(() => (valEl.style.opacity = "1"), 50);
+      }
+      if (detailsEl) {
+        detailsEl.style.opacity = "0";
+        detailsEl.textContent = seg.details;
+        setTimeout(() => (detailsEl.style.opacity = "1"), 50);
+      }
+    }
+
+    // Set initial rotation so first segment is near top, with a small offset for entrance spin
+    const initialTargetZ = Math.PI / 2 - meshes[0].userData.midAngle;
+    chartGroup.rotation.z = initialTargetZ - 2.0; // Start offset for entrance animation
+
+    // Activate the first segment immediately
+    updateActiveSegment(0);
+
+    let isDragging = false;
+    let previousTouchX = 0;
+    let inertia = 0.06; // Entrance spin inertia
+    let snapTarget: number | null = null; // Direct target rotation for arrow navigation
+
+    function getClosestIndex() {
+      let currentModZ = chartGroup.rotation.z % (Math.PI * 2);
+      if (currentModZ < 0) currentModZ += Math.PI * 2;
+
+      let closestDist = Infinity;
+      let closestIdx = 0;
+
+      meshes.forEach((m, i) => {
+        let posAngle = (m.userData.midAngle + currentModZ) % (Math.PI * 2);
+        if (posAngle < 0) posAngle += Math.PI * 2;
+
+        let dist = Math.abs(posAngle - Math.PI / 2);
+        dist = Math.min(dist, Math.PI * 2 - dist);
+
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIdx = i;
+        }
+      });
+      return closestIdx;
+    }
+
+    // Animation Loop
+    let time = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (!isDragging) {
+        if (snapTarget !== null) {
+          // Direct lerp to target (arrow navigation)
+          let diff = snapTarget - chartGroup.rotation.z;
+          // Keep diff small
+          while (diff > Math.PI) diff -= Math.PI * 2;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+
+          if (Math.abs(diff) < 0.005) {
+            chartGroup.rotation.z = snapTarget;
+            snapTarget = null;
+          } else {
+            chartGroup.rotation.z += diff * 0.12;
+          }
+        } else if (Math.abs(inertia) > 0.001) {
+          chartGroup.rotation.z += inertia;
+          inertia *= 0.92; // friction
+
+          const closest = getClosestIndex();
+          updateActiveSegment(closest);
+        } else if (activeIndex >= 0 && activeIndex < meshes.length) {
+          // Snap to nearest
+          const targetZ = Math.PI / 2 - meshes[activeIndex].userData.midAngle;
+
+          // Shortest path
+          let diff = (targetZ - chartGroup.rotation.z) % (Math.PI * 2);
+          if (diff > Math.PI) diff -= Math.PI * 2;
+          if (diff < -Math.PI) diff += Math.PI * 2;
+
+          chartGroup.rotation.z += diff * 0.08;
+        }
+      }
+
+      // Gentle floating animation
+      time += 0.01;
+      chartGroup.position.y = Math.sin(time) * 0.5;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Interaction Events
+    function handleStart(clientX: number) {
+      isDragging = true;
+      previousTouchX = clientX;
+      inertia = 0;
+      container.style.cursor = "grabbing";
+    }
+
+    function handleMove(clientX: number) {
+      if (!isDragging) return;
+      const deltaX = clientX - previousTouchX;
+
+      // Moving right/left spins it.
+      const deltaRot = deltaX * 0.012;
+      chartGroup.rotation.z -= deltaRot;
+      inertia = -deltaRot;
+
+      const closest = getClosestIndex();
+      updateActiveSegment(closest);
+
+      previousTouchX = clientX;
+    }
+
+    function handleEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      container.style.cursor = "grab";
+    }
+
+    // Mouse
+    container.addEventListener("mousedown", (e) => handleStart(e.clientX));
+    window.addEventListener("mousemove", (e) => handleMove(e.clientX));
+    window.addEventListener("mouseup", handleEnd);
+
+    // Touch
+    container.addEventListener(
+      "touchstart",
+      (e) => handleStart(e.touches[0].clientX),
+      { passive: false }
+    );
+    window.addEventListener(
+      "touchmove",
+      (e) => {
+        if (isDragging) e.preventDefault();
+        handleMove(e.touches[0].clientX);
+      },
+      { passive: false }
+    );
+    window.addEventListener("touchend", handleEnd);
+
+    // Resize Observer
+    const resizeObserver = new ResizeObserver(() => {
+      const newW = container.clientWidth;
+      const newH = container.clientHeight;
+      if (newW === 0 || newH === 0) return;
+      camera.aspect = newW / newH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newW, newH);
+    });
+    resizeObserver.observe(container);
+
+    // Arrow button navigation
+    function goToSegment(index: number) {
+      const total = meshes.length;
+      const wrappedIndex = ((index % total) + total) % total;
+
+      // Calculate exact target rotation to put this segment at top
+      const targetZ = Math.PI / 2 - meshes[wrappedIndex].userData.midAngle;
+
+      // Kill any inertia and set a direct snap target
+      inertia = 0;
+      snapTarget = targetZ;
+      updateActiveSegment(wrappedIndex);
+    }
+
+    document.getElementById("invest-prev")?.addEventListener("click", () => {
+      goToSegment(activeIndex - 1);
+    });
+    document.getElementById("invest-next")?.addEventListener("click", () => {
+      goToSegment(activeIndex + 1);
+    });
+  }
+
+  // Init chart when modal opens
+  document
+    .querySelector('[data-modal="investing"]')
+    ?.addEventListener("card:open", () => {
+      setTimeout(initChart, 50);
+    });
+</script>

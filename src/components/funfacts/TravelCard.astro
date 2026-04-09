@@ -1,0 +1,158 @@
+---
+const locations = [
+  // Born
+  { name: "Taiwan", lat: 25.033, lng: 121.565 },
+  // Pacific
+  { name: "Guam", lat: 13.444, lng: 144.794 },
+  // US East Coast
+  { name: "New York City", lat: 40.713, lng: -74.006 },
+  { name: "New Jersey", lat: 40.736, lng: -74.172 },
+  { name: "Niagara Falls", lat: 43.090, lng: -79.085 },
+  { name: "Washington DC", lat: 38.907, lng: -77.037 },
+  { name: "Harrisburg, PA", lat: 40.273, lng: -76.887 },
+  { name: "Orlando, FL", lat: 28.538, lng: -81.379 },
+  { name: "Connecticut", lat: 41.766, lng: -72.673 },
+  { name: "Boston, MA", lat: 42.360, lng: -71.059 },
+  { name: "Durham, NC", lat: 35.994, lng: -78.899 },
+  { name: "Avery County, NC", lat: 36.077, lng: -81.927 },
+  { name: "Maine", lat: 43.659, lng: -70.257 },
+  { name: "Virginia", lat: 37.541, lng: -77.436 },
+  { name: "Lancaster, PA", lat: 40.038, lng: -76.306 },
+  { name: "Pittsburgh, PA", lat: 40.441, lng: -79.996 },
+  { name: "Cape Cod, MA", lat: 41.669, lng: -70.296 },
+  { name: "New Haven, CT", lat: 41.308, lng: -72.928 },
+  // US South & Central
+  { name: "Nashville, TN", lat: 36.163, lng: -86.782 },
+  { name: "Atlanta, GA", lat: 33.749, lng: -84.388 },
+  { name: "Dallas, TX", lat: 32.777, lng: -96.797 },
+  { name: "Houston, TX", lat: 29.760, lng: -95.370 },
+  { name: "New Orleans, LA", lat: 29.951, lng: -90.072 },
+  { name: "Corpus Christi, TX", lat: 27.801, lng: -97.396 },
+  // US Midwest
+  { name: "Chicago, IL", lat: 41.878, lng: -87.630 },
+  // US West
+  { name: "Phoenix, AZ", lat: 33.448, lng: -112.074 },
+  { name: "Grand Canyon, AZ", lat: 36.107, lng: -112.113 },
+  { name: "Sedona, AZ", lat: 34.870, lng: -111.761 },
+  { name: "Los Angeles, CA", lat: 34.052, lng: -118.244 },
+  { name: "San Francisco, CA", lat: 37.775, lng: -122.419 },
+  { name: "Las Vegas, NV", lat: 36.170, lng: -115.140 },
+  { name: "Seattle, WA", lat: 47.606, lng: -122.332 },
+  { name: "Portland, OR", lat: 45.515, lng: -122.678 },
+  // US Northeast
+  { name: "Vermont", lat: 44.476, lng: -73.212 },
+  // Canada
+  { name: "Toronto", lat: 43.653, lng: -79.383 },
+  // Central America
+  { name: "Panama", lat: 8.982, lng: -79.520 },
+  // Europe
+  { name: "Munich", lat: 48.135, lng: 11.582 },
+  { name: "Vienna", lat: 48.208, lng: 16.374 },
+  { name: "Budapest", lat: 47.498, lng: 19.040 },
+  { name: "Bratislava", lat: 48.149, lng: 17.108 },
+  { name: "Prague", lat: 50.076, lng: 14.438 },
+  // Asia
+  { name: "Seoul", lat: 37.567, lng: 126.978 },
+  { name: "Japan", lat: 35.676, lng: 139.650 },
+];
+
+const countryCount = 11; // Taiwan, USA (incl. Guam), Canada, Panama, Germany, Austria, Hungary, Slovakia, Czech Republic, South Korea, Japan
+---
+
+<div class="flex flex-col items-center">
+  <p class="text-text text-sm mb-4">Most recent: <span class="text-accent font-semibold">Tokyo, Japan 2026</span></p>
+  <div class="relative w-full max-w-[450px] aspect-square">
+    <div id="travel-globe" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+  </div>
+  <p class="text-text-muted text-sm mt-3">{locations.length} places across {countryCount}+ countries</p>
+</div>
+
+<script>
+  import Globe from 'globe.gl';
+
+  let globeInstance: ReturnType<typeof Globe> | null = null;
+
+  const locations = [
+    { name: "Taiwan", lat: 25.033, lng: 121.565 },
+    { name: "Guam", lat: 13.444, lng: 144.794 },
+    { name: "New York City", lat: 40.713, lng: -74.006 },
+    { name: "New Jersey", lat: 40.736, lng: -74.172 },
+    { name: "Niagara Falls", lat: 43.090, lng: -79.085 },
+    { name: "Washington DC", lat: 38.907, lng: -77.037 },
+    { name: "Harrisburg, PA", lat: 40.273, lng: -76.887 },
+    { name: "Orlando, FL", lat: 28.538, lng: -81.379 },
+    { name: "Connecticut", lat: 41.766, lng: -72.673 },
+    { name: "Boston, MA", lat: 42.360, lng: -71.059 },
+    { name: "Durham, NC", lat: 35.994, lng: -78.899 },
+    { name: "Avery County, NC", lat: 36.077, lng: -81.927 },
+    { name: "Maine", lat: 43.659, lng: -70.257 },
+    { name: "Virginia", lat: 37.541, lng: -77.436 },
+    { name: "Lancaster, PA", lat: 40.038, lng: -76.306 },
+    { name: "Pittsburgh, PA", lat: 40.441, lng: -79.996 },
+    { name: "Cape Cod, MA", lat: 41.669, lng: -70.296 },
+    { name: "New Haven, CT", lat: 41.308, lng: -72.928 },
+    { name: "Nashville, TN", lat: 36.163, lng: -86.782 },
+    { name: "Atlanta, GA", lat: 33.749, lng: -84.388 },
+    { name: "Dallas, TX", lat: 32.777, lng: -96.797 },
+    { name: "Houston, TX", lat: 29.760, lng: -95.370 },
+    { name: "New Orleans, LA", lat: 29.951, lng: -90.072 },
+    { name: "Corpus Christi, TX", lat: 27.801, lng: -97.396 },
+    { name: "Chicago, IL", lat: 41.878, lng: -87.630 },
+    { name: "Phoenix, AZ", lat: 33.448, lng: -112.074 },
+    { name: "Grand Canyon, AZ", lat: 36.107, lng: -112.113 },
+    { name: "Sedona, AZ", lat: 34.870, lng: -111.761 },
+    { name: "Los Angeles, CA", lat: 34.052, lng: -118.244 },
+    { name: "San Francisco, CA", lat: 37.775, lng: -122.419 },
+    { name: "Las Vegas, NV", lat: 36.170, lng: -115.140 },
+    { name: "Seattle, WA", lat: 47.606, lng: -122.332 },
+    { name: "Portland, OR", lat: 45.515, lng: -122.678 },
+    { name: "Vermont", lat: 44.476, lng: -73.212 },
+    { name: "Toronto", lat: 43.653, lng: -79.383 },
+    { name: "Panama", lat: 8.982, lng: -79.520 },
+    { name: "Munich", lat: 48.135, lng: 11.582 },
+    { name: "Vienna", lat: 48.208, lng: 16.374 },
+    { name: "Budapest", lat: 47.498, lng: 19.040 },
+    { name: "Bratislava", lat: 48.149, lng: 17.108 },
+    { name: "Prague", lat: 50.076, lng: 14.438 },
+    { name: "Seoul", lat: 37.567, lng: 126.978 },
+    { name: "Japan", lat: 35.676, lng: 139.650 },
+  ];
+
+  function initGlobe() {
+    if (globeInstance) return;
+
+    const container = document.getElementById('travel-globe');
+    if (!container) return;
+
+    const size = container.offsetWidth;
+
+    globeInstance = Globe()
+      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+      .backgroundColor('rgba(0,0,0,0)')
+      .width(size)
+      .height(size)
+      .pointsData(locations)
+      .pointLat('lat')
+      .pointLng('lng')
+      .pointColor(() => '#ef4444')
+      .pointAltitude(0.01)
+      .pointRadius(0.4)
+      .pointLabel('name')
+      (container);
+
+    // Auto-rotation via OrbitControls
+    const controls = globeInstance.controls();
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.5;
+    controls.enableZoom = true;
+    controls.minDistance = 120;
+    controls.maxDistance = 500;
+
+    // Point camera at Taiwan initially
+    globeInstance.pointOfView({ lat: 25, lng: 121, altitude: 2.5 }, 0);
+  }
+
+  document.querySelector('[data-modal="travel"]')
+    ?.addEventListener('card:open', initGlobe);
+</script>

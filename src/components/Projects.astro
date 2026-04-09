@@ -1,67 +1,302 @@
 ---
 const projects = [
   {
-    name: "Project Alpha",
-    tagline: "A real-time collaboration tool",
-    description: "Built a real-time collaboration platform that enables teams to work together seamlessly with live cursors, shared editing, and instant sync.",
-    tags: ["React", "WebSocket", "Node.js"],
-    github: "https://github.com",
-    demo: "https://example.com",
+    name: "King of the Hill",
+    tagline: "Crowdsourced NYC restaurant rankings",
+    description: "Viral restaurant ranking app that grew to 4,000+ organic users in 2 weeks after launching on r/FoodNYC. Built a Reddit-native version (Devvit) embedding voting directly inside subreddit communities. Custom sync with optimistic updates and 10-min batch intervals cut Firebase costs by 70% while maintaining perceived real-time UX across hundreds of concurrent users.",
+    tags: ["Next.js", "Firebase", "Redis", "Devvit"],
+    github: null,
+    demo: "https://www.kinghill.nyc",
+    highlight: true,
   },
   {
-    name: "Project Beta",
-    tagline: "AI-powered code review assistant",
-    description: "An intelligent code review tool that uses machine learning to suggest improvements, catch bugs, and enforce coding standards automatically.",
-    tags: ["Python", "FastAPI", "OpenAI"],
-    github: "https://github.com",
-    demo: "https://example.com",
+    name: "Explain Like I'm 12",
+    tagline: "Chrome Extension · AI document simplifier",
+    description: "Chrome extension that simplifies complex, jargon-heavy documents to a 12-year-old reading level using Claude and Grok APIs. Features an interactive dino game to retain users during 30s+ LLM processing. Dual-layer caching (IndexedDB + Cloudflare KV) achieves 90% cache hit rate, delivering instant results for repeat documents and cutting API costs by 70%.",
+    tags: ["JavaScript", "Cloudflare Workers", "Claude API", "IndexedDB"],
+    github: null,
+    demo: null,
   },
   {
-    name: "Project Gamma",
-    tagline: "Minimalist habit tracker",
-    description: "A clean, distraction-free habit tracking app focused on simplicity. Track daily habits with streaks, stats, and gentle reminders.",
-    tags: ["Next.js", "Tailwind", "Supabase"],
-    github: "https://github.com",
-    demo: "https://example.com",
+    name: "Harvest Valley Catalog",
+    tagline: "Wholesale seafood ordering platform",
+    description: "Built a product catalog and quote request system for a wholesale seafood distributor, streamlining customer order intake with automated email notifications to the sales team. Automated migration of 1,000+ SKUs from legacy PDF catalogs using Python OCR, saving 40+ hours of manual data entry.",
+    tags: ["Vite.js", "Firebase", "Python", "OCR"],
+    github: null,
+    demo: null,
   },
   {
-    name: "Project Delta",
-    tagline: "Open-source design system",
-    description: "A comprehensive design system with accessible components, design tokens, and documentation. Used by teams to build consistent UIs faster.",
-    tags: ["TypeScript", "Storybook", "CSS"],
-    github: "https://github.com",
-    demo: "https://example.com",
+    name: "Fiserv Cert Dashboard",
+    tagline: "Internal React certification tracker",
+    description: "Internal dashboard that automated certification status tracking across 5+ hardware/payment workstreams at Fiserv. Replaced manual spreadsheet coordination and reduced overhead across the CommerceHub integration team. Also built a Google Pay / Samsung Pay test wallet app to generate 10+ weekly payment payloads, cutting QA setup time by 80%.",
+    tags: ["React", "Java", "Android SDK", "ISO 8583"],
+    github: null,
+    demo: null,
   },
 ];
 ---
 
-<h2 class="text-3xl md:text-4xl font-bold text-text text-center mb-12">Projects</h2>
+<div class="projects-wrapper">
+  <div class="projects-heading">
+    <p class="projects-eyebrow">Selected Work</p>
+    <h2 class="projects-title">Projects</h2>
+    <div class="projects-title-line"></div>
+  </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  {projects.map((project) => (
-    <div class="project-card group bg-card-bg shadow-[0_10px_20px_rgba(0,0,0,0.3)] border border-border rounded-xl p-6 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(59,139,255,0.12)] hover:border-accent/20 transition-all duration-300" style="opacity: 0;">
-      <h3 class="text-xl font-semibold text-text">{project.name}</h3>
-      <p class="text-text-muted text-sm mb-3">{project.tagline}</p>
+  <div class="projects-grid">
+    {projects.map((project) => (
+      <div class={`project-card group${project.highlight ? ' project-card--highlight' : ''}`} style="opacity: 0;">
+        {project.highlight && (
+          <div class="project-live-badge">🔥 Live · 4k+ Users</div>
+        )}
+        <div class="project-card-inner">
+          <div class="project-header">
+            <h3 class="project-name">{project.name}</h3>
+            <p class="project-tagline">{project.tagline}</p>
+          </div>
 
-      <div class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-300">
-        <div class="overflow-hidden">
-          <p class="text-text-muted text-sm leading-relaxed mb-4">{project.description}</p>
+          <p class="project-desc">{project.description}</p>
+
+          <div class="project-tags">
+            {project.tags.map((tag) => (
+              <span class="project-tag">{tag}</span>
+            ))}
+          </div>
+
+          {(project.github || project.demo) && (
+            <div class="project-links">
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" class="project-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/></svg>
+                  GitHub
+                </a>
+              )}
+              {project.demo && (
+                <a href={project.demo} target="_blank" rel="noopener noreferrer" class="project-link project-link--demo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  Live Site ↗
+                </a>
+              )}
+            </div>
+          )}
         </div>
+        <!-- Shine overlay on hover -->
+        <div class="project-shine" aria-hidden="true"></div>
       </div>
-
-      <div class="flex flex-wrap gap-2 mb-4">
-        {project.tags.map((tag) => (
-          <span class="bg-accent-soft text-accent text-xs px-2 py-1 rounded-full">{tag}</span>
-        ))}
-      </div>
-
-      <div class="flex gap-4">
-        <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-accent text-sm hover:underline">GitHub</a>
-        <a href={project.demo} target="_blank" rel="noopener noreferrer" class="text-accent text-sm hover:underline">Live Demo</a>
-      </div>
-    </div>
-  ))}
+    ))}
+  </div>
 </div>
+
+<style>
+  .projects-wrapper {
+    width: 100%;
+  }
+
+  /* ─── Heading ─── */
+  .projects-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 3rem;
+  }
+
+  .projects-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(200,155,60,0.6);
+    margin: 0;
+  }
+
+  .projects-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: #f0e6d3;
+    margin: 0;
+    text-align: center;
+  }
+
+  .projects-title-line {
+    width: 3rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,155,60,0.6), transparent);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── Grid ─── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  /* ─── Card ─── */
+  .project-card {
+    position: relative;
+    background: rgba(13, 24, 40, 0.8);
+    border: 1px solid rgba(200, 155, 60, 0.14);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(200, 155, 60, 0.32);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(200, 155, 60, 0.08),
+      0 4px 24px rgba(59, 139, 255, 0.08);
+  }
+
+  /* Highlight card (King of the Hill) */
+  .project-card--highlight {
+    border-color: rgba(200, 155, 60, 0.3);
+    box-shadow: 0 0 30px rgba(200, 155, 60, 0.06);
+  }
+  .project-card--highlight:hover {
+    border-color: rgba(200, 155, 60, 0.55);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(200, 155, 60, 0.12);
+  }
+
+  /* Live badge */
+  .project-live-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    background: rgba(200, 155, 60, 0.12);
+    border: 1px solid rgba(200, 155, 60, 0.35);
+    border-radius: 9999px;
+    color: rgba(200, 155, 60, 0.9);
+    z-index: 2;
+  }
+
+  /* Demo link variant */
+  .project-link--demo {
+    color: rgba(200, 155, 60, 0.8);
+  }
+  .project-link--demo:hover {
+    color: #c89b3c;
+  }
+
+  .project-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: 1.5rem;
+    height: 100%;
+  }
+
+  .project-header { display: flex; flex-direction: column; gap: 0.25rem; }
+
+  .project-name {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f0e6d3;
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+
+  .project-tagline {
+    font-size: 0.75rem;
+    color: rgba(200, 155, 60, 0.65);
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+
+  .project-desc {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: rgba(139, 139, 158, 0.9);
+    margin: 0;
+    flex: 1;
+  }
+
+  /* Tags */
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .project-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(59, 139, 255, 0.1);
+    color: rgba(59, 139, 255, 0.85);
+    border: 1px solid rgba(59, 139, 255, 0.15);
+  }
+
+  /* Links */
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid rgba(200, 155, 60, 0.1);
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: rgba(59, 139, 255, 0.8);
+    transition: color 0.2s ease;
+    padding: 0.25rem 0;
+  }
+  .project-link:hover {
+    color: #3b8bff;
+  }
+
+  /* Shine overlay */
+  .project-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(200, 155, 60, 0.03) 0%,
+      transparent 50%,
+      rgba(59, 139, 255, 0.02) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .project-card:hover .project-shine { opacity: 1; }
+</style>
 
 <script>
   const observer = new IntersectionObserver(
@@ -71,13 +306,14 @@ const projects = [
           const card = entry.target as HTMLElement;
           const index = Number(card.dataset.index) || 0;
           setTimeout(() => {
+            card.style.opacity = '1';
             card.classList.add('fade-in-up');
           }, index * 120);
           observer.unobserve(card);
         }
       });
     },
-    { threshold: 0.1 }
+    { threshold: 0.08 }
   );
 
   document.querySelectorAll('.project-card').forEach((card, i) => {
